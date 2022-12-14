@@ -1,0 +1,25 @@
+*{
+    font-family:"SansNarrow"
+}
+
+.title{
+    margin-bottom: 100px;
+    font-family: "LemonTuesday";
+}
+body{
+    margin-top: 10px;
+}
+
+@font-face {
+    font-family: "LemonTuesday";
+    src: local("Lemon Tuesday"),
+      url("../fonts/LemonTuesday.otf") format("opentype") tech(color-COLRv1),
+      url("../fonts/LemonTuesday.otf") format("opentype");
+  }
+
+@font-face {
+    font-family: "SansNarrow";
+    src: local("PT_Sans-Narrow-Web-Regular"),
+      url("../fonts/PT_Sans-Narrow-Web-Regular.ttf") format("opentype") tech(color-COLRv1),
+      url("../fonts/PT_Sans-Narrow-Web-Regular.ttf") format("opentype");
+  }
