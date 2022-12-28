@@ -1,9 +1,15 @@
 *{
-    font-family:"SansNarrow"
+    font-family:"SansNarrow";
+    box-sizing: border-box;
+    color: #424949;
 }
 
 .title{
     margin-bottom: 100px;
+    font-family: "LemonTuesday";
+}
+.adminPpageTitle
+{
     font-family: "LemonTuesday";
 }
 body{
@@ -22,4 +28,14 @@ body{
     src: local("PT_Sans-Narrow-Web-Regular"),
       url("../fonts/PT_Sans-Narrow-Web-Regular.ttf") format("opentype") tech(color-COLRv1),
       url("../fonts/PT_Sans-Narrow-Web-Regular.ttf") format("opentype");
+  }
+
+  .navbar-brand :hover{
+         color:#9A7D0A;
+         transition-duration: 0.4s;
+  }
+
+  .addbook-btn :hover{
+        color:#9A7D0A;
+        transition-duration: 0.4s;
   }
