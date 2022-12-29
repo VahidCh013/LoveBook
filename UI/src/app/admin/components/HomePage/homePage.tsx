@@ -1,8 +1,10 @@
 
 import { NavLink,Link, Route, Switch } from "react-router-dom";
-import ManageBook from "./managebook";
-import ManageCategory from "./managecategory";
-import NavBar from "./navbar";
+import { Routes } from "../../../../shared/routes/routes";
+import AddBook from "../ManageBooks/AddBook";
+import ManageBook from "../ManageBooks/ManageBook";
+import ManageCategory from "../ManageBooks/managecategory";
+import NavBar from "../NavBar/navbar";
 
 interface IHomePageProps{}
 
@@ -24,8 +26,9 @@ const HomePage :React.FunctionComponent<IHomePageProps> = () => {
                 <NavBar/>
                 <div className="col-md-9">
                     <Switch>
-                        <Route path='/managebook' component={ManageBook}></Route>
-                        <Route path='/managecategory' component={ManageCategory}></Route>                        
+                        <Route path={Routes.ManageBook} component={ManageBook}></Route>
+                        <Route path={Routes.ManageCategory} component={ManageCategory}></Route>  
+                        <Route path={Routes.AddBook} component={AddBook}></Route>                      
                     </Switch>
                 </div>
             </div>
