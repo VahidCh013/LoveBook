@@ -15,8 +15,8 @@ const ManageBook: React.FunctionComponent<IManageBook> = () => {
     setBookColumns([{ name: "Name" }, { name: "Status" }]);
 
     setBooks([
-      { name: "book A", status: "true" },
-      { name: "book B", status: "true" },
+      { id:1, name: "book A", status: true },
+      { id:2, name: "book B", status: false },
     ]);
   }, []);
 

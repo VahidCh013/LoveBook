@@ -1,5 +1,6 @@
 export interface IBook
 {
+    id:number,
     name:string,
-    status:string
+    status:boolean
 }
