@@ -3,6 +3,7 @@ export enum Routes{
     ForgetPassword='/forgetPassword',
     ManageBook='/managebook',
     ManageCategory='/managecategory',
-    AddBook='/addbook'
+    AddBook='/addbook',
+    EditBook='/editbook'
 
 }

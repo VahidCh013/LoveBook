@@ -2,6 +2,7 @@
 import { NavLink,Link, Route, Switch } from "react-router-dom";
 import { Routes } from "../../../../shared/routes/routes";
 import AddBook from "../ManageBooks/AddBook";
+import EditBook from "../ManageBooks/EditBook";
 import ManageBook from "../ManageBooks/ManageBook";
 import ManageCategory from "../ManageBooks/managecategory";
 import NavBar from "../NavBar/navbar";
@@ -28,7 +29,8 @@ const HomePage :React.FunctionComponent<IHomePageProps> = () => {
                     <Switch>
                         <Route path={Routes.ManageBook} component={ManageBook}></Route>
                         <Route path={Routes.ManageCategory} component={ManageCategory}></Route>  
-                        <Route path={Routes.AddBook} component={AddBook}></Route>                      
+                        <Route path={Routes.AddBook} component={AddBook}></Route>
+                        <Route path={Routes.EditBook} component={EditBook}></Route>
                     </Switch>
                 </div>
             </div>

@@ -1,7 +1,10 @@
+import { faL } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { Link, NavLink, Route } from "react-router-dom";
+import { Link, NavLink, Route, useHistory } from "react-router-dom";
+import LPopUp from "../../../../shared/components/LPopUp";
 import LTable from "../../../../shared/components/LTable";
 import { IColumn } from "../../../../shared/models/IColumn";
+import { Books } from "../../../../shared/repositories/bookReposirory";
 import { Routes } from "../../../../shared/routes/routes";
 import { IBook } from "./models/book";
 
@@ -10,15 +13,24 @@ interface IManageBook {}
 const ManageBook: React.FunctionComponent<IManageBook> = () => {
   const [books, setBooks] = useState<IBook[]>([]);
   const [bookColumns, setBookColumns] = useState<IColumn[]>([]);
+  const history = useHistory();
 
   useEffect(() => {
     setBookColumns([{ name: "Name" }, { name: "Status" }]);
-
-    setBooks([
-      { id:1, name: "book A", status: true },
-      { id:2, name: "book B", status: false },
-    ]);
+    //get books from APi
+    setBooks(Books);
   }, []);
+  const onDelete = (id: number) => {
+    const updated = books.filter((b) => b.id !== id);
+    setBooks(updated);
+    console.log(updated);
+  };
+  const onEdit = (id: number) => {
+    history.push({
+      pathname: Routes.EditBook,
+      search: `?id=${id}`
+    })
+  };
 
   return (
     <>
@@ -34,6 +46,8 @@ const ManageBook: React.FunctionComponent<IManageBook> = () => {
             columns={bookColumns}
             data={books}
             includeTools={true}
+            handleDelete={onDelete}
+            handleEdit={onEdit}
           ></LTable>
         </div>
       </div>
