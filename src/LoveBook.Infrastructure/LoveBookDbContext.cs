@@ -9,6 +9,4 @@ public class LoveBookDbContext: IdentityDbContext<IdentityUser>
     public LoveBookDbContext(DbContextOptions<LoveBookDbContext> options) : base(options)
     {
     }
-
-
 }
