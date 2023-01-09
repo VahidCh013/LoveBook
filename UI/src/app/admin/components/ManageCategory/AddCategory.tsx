@@ -1,27 +1,62 @@
 import { IconButton } from "@material-ui/core";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import LButton from "../../../../shared/components/LButton";
 import LDropdown from "../../../../shared/components/LDropdown";
 import LInput from "../../../../shared/components/LInput";
 import LPopUp from "../../../../shared/components/LPopUp";
-import { CategoryItems } from "../../../../shared/models/categoryItems";
 import { StatusItems } from "../../../../shared/models/Status";
-interface IAddCategoryprops {}
-const AddCategory: React.FunctionComponent<IAddCategoryprops> = () => {
-  const [showPopUp, setShowPopUp] = useState(false);
-
-  const handelNameChange = () => {};
+import { ISpec } from "../../../../shared/utils/iSpec";
+interface IAddCategoryProps {}
+const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
+  const [specValue, setSpecValue] = useState("");
+  const [specs, setSpecs] = useState<ISpec[]>([]);
+  const [showAddSpecPopUp, setShowAddSpecPopUp] = useState(false);
+  const [name, setName] = useState("");
+  const handleReturn = () => {};
+  const handleSubmit = () => {
+     
+    let category = {
+      name: name,
+      specs: specs,
+      isActive:
+    };
+    console.log(category);
+  };
+  const handelNameChange = (value: string) => {
+    setName(value);
+  };
   const handleStatusChange = () => {};
-  const handleSizeChange = () => {};
+  const handleSpecValueChange = (id: number, value: string) => {
+    let updatedSpecs = specs.map((s) => {
+      if (s.id === id) {
+        s.value = value;
+      }
+      return s;
+    });
+    setSpecs(updatedSpecs);
+  };
   const handleAdd = () => {
-    setShowPopUp(true);
+    setShowAddSpecPopUp(true);
   };
   const edit = () => {};
   const remove = () => {};
   const onCancel = () => {
-    setShowPopUp(false);
+    setShowAddSpecPopUp(false);
   };
-  const onConfirm = () => {};
+  const onConfirm = () => {
+    const spec: ISpec = {
+      id: specs.length + 1,
+      value: specValue,
+    };
+    let currentSpecs = specs;
+    currentSpecs.push(spec);
+    setSpecs(currentSpecs);
+    setShowAddSpecPopUp(false);
+  };
+
+  const changeSpecValue = (value: string) => {
+    setSpecValue(value);
+  };
 
   const headerAdd = (
     <>
@@ -35,7 +70,9 @@ const AddCategory: React.FunctionComponent<IAddCategoryprops> = () => {
           <label className="">Name:</label>
         </div>
         <div className="col-md-10 d-flex justify-content-start">
-        <input className=""></input>
+          <LInput
+            handleChange={(e) => changeSpecValue(e.target.value)}
+          ></LInput>
         </div>
       </div>
     </>
@@ -60,7 +97,10 @@ const AddCategory: React.FunctionComponent<IAddCategoryprops> = () => {
         <div className="border mt-4 py-5">
           <div className="row px-4">
             <div className="col-md-6">
-              <LInput handleChange={handelNameChange} caption="Name:"></LInput>
+              <LInput
+                handleChange={(e) => handelNameChange(e.target.value)}
+                caption="Name:"
+              ></LInput>
             </div>
             <div className="col-md-1">
               <h5>Staus:</h5>
@@ -85,34 +125,65 @@ const AddCategory: React.FunctionComponent<IAddCategoryprops> = () => {
             <div className="row mx-1">
               <div className="border px-4 mt-3">
                 <div className="row mt-4">
-                  <div className="col-md-6">
-                    <div className="col-md-8">
-                      <LInput
-                        handleChange={handleSizeChange}
-                        caption="Size:"
-                      ></LInput>
-                    </div>
-                  </div>
-                  <div className="col-md-4 d-flex justify-content-end">
-                    <IconButton aria-label="Example" onClick={() => edit()}>
-                      <i className="fa fa-pencil text-success fa-2xs"></i>
-                    </IconButton>
-                    <IconButton aria-label="delete" onClick={() => remove()}>
-                      <i className="fa fa-trash-o text-danger"></i>
-                    </IconButton>
-                  </div>
+                  {specs.length === 0 ? (
+                    <>Empty</>
+                  ) : (
+                    specs.map((s) => {
+                      return (
+                        <>
+                          <div className="col-md-6">
+                            <div className="col-md-8">
+                              <LInput
+                                defaultValue={s.value}
+                                handleChange={(e) =>
+                                  handleSpecValueChange(s.id, e.target.value)
+                                }
+                              ></LInput>
+                            </div>
+                          </div>
+                          <div className="col-md-4 d-flex justify-content-end">
+                            <IconButton
+                              aria-label="delete"
+                              onClick={() => remove()}
+                            >
+                              <i className="fa fa-trash-o text-danger"></i>
+                            </IconButton>
+                          </div>
+                        </>
+                      );
+                    })
+                  )}
                 </div>
               </div>
             </div>
           </div>
+
+          <div className="row mt-5">
+            <div className="col-md-10 d-flex justify-content-end">
+              <LButton
+                label="Back"
+                color="inherit"
+                onClick={handleReturn}
+              ></LButton>
+            </div>
+            <div className="col-md-2 d-flex justify-content-start">
+              <LButton
+                label="Save"
+                color="inherit"
+                onClick={handleSubmit}
+              ></LButton>
+            </div>
+          </div>
         </div>
       </div>
-      <LPopUp
-        headerNode={headerAdd}
-        children={bodyAdd}
-        footerNode={footerAdd}
-        show={showPopUp}
-      ></LPopUp>
+      {showAddSpecPopUp && (
+        <LPopUp
+          headerNode={headerAdd}
+          children={bodyAdd}
+          footerNode={footerAdd}
+          show={showAddSpecPopUp}
+        ></LPopUp>
+      )}
     </>
   );
 };

@@ -110,12 +110,14 @@ const LTable: React.FunctionComponent<ILTableProps> = ({
           )}
         </tbody>
       </table>
-      <LPopUp
-        show={showPopUp}
-        children={body}
-        headerNode={header}
-        footerNode={footer}
-      ></LPopUp>
+      {showPopUp && (
+        <LPopUp
+          show={showPopUp}
+          children={body}
+          headerNode={header}
+          footerNode={footer}
+        ></LPopUp>
+      )}
     </>
   );
 };
