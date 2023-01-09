@@ -4,8 +4,10 @@ import { Routes } from "../../../../shared/routes/routes";
 import AddBook from "../ManageBooks/AddBook";
 import EditBook from "../ManageBooks/EditBook";
 import ManageBook from "../ManageBooks/ManageBook";
-import ManageCategory from "../ManageBooks/managecategory";
-import NavBar from "../NavBar/navbar";
+import AddCategory from "../ManageCategory/AddCategory";
+import EditCategory from "../ManageCategory/EditCategory";
+import ManageCategory from "../ManageCategory/ManageCategory";
+import NavBar from "../NavBar/Navbar";
 
 interface IHomePageProps{}
 
@@ -31,6 +33,8 @@ const HomePage :React.FunctionComponent<IHomePageProps> = () => {
                         <Route path={Routes.ManageCategory} component={ManageCategory}></Route>  
                         <Route path={Routes.AddBook} component={AddBook}></Route>
                         <Route path={Routes.EditBook} component={EditBook}></Route>
+                        <Route path={Routes.AddCategory} component={AddCategory}></Route>
+                        <Route path={Routes.EditCategory} component={EditCategory}></Route>
                     </Switch>
                 </div>
             </div>

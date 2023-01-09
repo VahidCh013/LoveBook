@@ -1,6 +1,6 @@
 
 import Login from './app/login/components/login';
-import HomePage from './app/admin/components/HomePage/homePage';
+import HomePage from './app/admin/components/HomePage/HomePage';
 import { Switch, Route } from 'react-router-dom';
 import ForgetPassword from './app/login/components/forgetPassword';
 

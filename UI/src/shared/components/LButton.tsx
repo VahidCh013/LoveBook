@@ -1,19 +1,22 @@
+import Button from '@mui/material/Button';
+import { color } from '@mui/system';
 import React from "react";
 interface ILbuttonProps {
-  className: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-
+  onClick: () => void;
+  label: string;
+  color: 
+      'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning'
 }
 const LButton: React.FunctionComponent<ILbuttonProps> = ({
-  className,
   onClick,
-
+  label,
+  color
 }) => {
   return (
     <>
-      <button className="btn " onClick={onClick}>
-        <i className={className}></i>
-      </button>
+      <Button variant="contained" color={color} onClick={onClick}>
+        {label}
+      </Button>
     </>
   );
 };
