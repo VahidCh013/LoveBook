@@ -2,6 +2,8 @@
 using System.Security.Claims;
 using System.Text;
 using LoveBook.Api.Models;
+using LoveBook.Application.Authentications.Commands.Register;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -15,15 +17,17 @@ public class AuthenticateController : ControllerBase
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _configuration;
+    private readonly IMediator _mediator;
 
     public AuthenticateController(
         UserManager<IdentityUser> userManager,
         RoleManager<IdentityRole> roleManager,
-        IConfiguration configuration)
+        IConfiguration configuration, IMediator mediator)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _configuration = configuration;
+        _mediator = mediator;
     }
 
     [HttpPost]
@@ -37,8 +41,8 @@ public class AuthenticateController : ControllerBase
 
             var authClaims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new (ClaimTypes.Name, user.UserName),
+                new (JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
 
             foreach (var userRole in userRoles)
@@ -61,20 +65,7 @@ public class AuthenticateController : ControllerBase
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
-        var userExists = await _userManager.FindByNameAsync(model.Username);
-        if (userExists != null)
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
-
-        IdentityUser user = new()
-        {
-            Email = model.Email,
-            SecurityStamp = Guid.NewGuid().ToString(),
-            UserName = model.Username
-        };
-        var result = await _userManager.CreateAsync(user, model.Password);
-        if (!result.Succeeded)
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
-
+        var result=await _mediator.Send(new RegisterCommand(model.Username, model.Password, model.Email));
         return Ok(new Response { Status = "Success", Message = "User created successfully!" });
     }
 

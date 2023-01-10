@@ -30,6 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\LoveBook.Application\LoveBook.Application.csproj" />
       <ProjectReference Include="..\LoveBook.Infrastructure\LoveBook.Infrastructure.csproj" />
     </ItemGroup>
 

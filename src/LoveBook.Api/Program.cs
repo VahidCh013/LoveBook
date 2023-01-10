@@ -1,4 +1,5 @@
 using System.Text;
+using LoveBook.Application;
 using LoveBook.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 // Add services to the container.
+builder.Services.AddMediator();
+
 
 
 // For Entity Framework
@@ -66,6 +69,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandler("/error");
 app.UseHttpsRedirection();
 // Authentication & Authorization
 app.UseAuthentication();
