@@ -17,7 +17,6 @@ const EditBook: React.FunctionComponent<IEditBookProps> = () => {
   const [categoryId, setCategoryId] = useState<number>();
   const histori = useHistory();
 
-
   useEffect(() => {
     const selectedBook = Books.find((b) => b.id.toString() === id);
     setName(selectedBook?.name);
@@ -41,14 +40,14 @@ const EditBook: React.FunctionComponent<IEditBookProps> = () => {
   ) => {
     setCategoryId(e.target.value);
   };
-const handleSubmit=()=>{
-  console.log("submit book");
-}
+  const handleSubmit = () => {
+    console.log("submit book");
+  };
 
-const handleReturn=()=>{
-  console.log('return');
-  histori.push('/managebook');
-}
+  const handleReturn = () => {
+    console.log("return");
+    histori.push("/managebook");
+  };
   return (
     <>
       <div className="container-fluid">
@@ -98,7 +97,11 @@ const handleReturn=()=>{
               ></LButton>
             </div>
             <div className="col-md-2 d-flex justify-content-start">
-              <LButton label="Save" color="inherit" onClick={handleSubmit}></LButton>
+              <LButton
+                label="Save"
+                color="inherit"
+                onClick={handleSubmit}
+              ></LButton>
             </div>
           </div>
         </div>

@@ -27,8 +27,9 @@ const ManageCategory :React.FunctionComponent<IManageBookProps> = () => {
     const onEdit=(id:number)=>{
         history.push({
             pathname:Routes.EditCategory,
-            // search: `?id=${id}`
+            search: `?id=${id}`
         })
+        console.log(id);
     };
     const onChangeStatus=(id:number)=>{
         const categoryUpdated= categories.map((c=>

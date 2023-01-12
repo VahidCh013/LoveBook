@@ -6,26 +6,49 @@ import LInput from "../../../../shared/components/LInput";
 import LPopUp from "../../../../shared/components/LPopUp";
 import { StatusItems } from "../../../../shared/models/Status";
 import { ISpec } from "../../../../shared/utils/iSpec";
+import * as yup from "yup";
+import { string } from "yargs";
+import { useHistory } from "react-router-dom";
 interface IAddCategoryProps {}
 const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
   const [specValue, setSpecValue] = useState("");
   const [specs, setSpecs] = useState<ISpec[]>([]);
   const [showAddSpecPopUp, setShowAddSpecPopUp] = useState(false);
   const [name, setName] = useState("");
-  const handleReturn = () => {};
+  const [status, setStatus] = useState("0");
+  const history = useHistory();
+
+  let schema = yup.object().shape({
+    name: yup.string().required(),
+  });
+  const handleReturn = () => {
+    history.push('/managecategory');
+  };
   const handleSubmit = () => {
-     
     let category = {
       name: name,
       specs: specs,
-      isActive:
+      isActive: status,
     };
-    console.log(category);
+
+    schema
+      .validate(category)
+      .then(() => {
+        console.log(category);
+      })
+      .catch((e) => {
+        console.log(e.name);
+        console.log(e.errors);
+      });
   };
+
   const handelNameChange = (value: string) => {
     setName(value);
   };
-  const handleStatusChange = () => {};
+  const handleStatusChange = (value: string) => {
+    console.log(value);
+    setStatus(value);
+  };
   const handleSpecValueChange = (id: number, value: string) => {
     let updatedSpecs = specs.map((s) => {
       if (s.id === id) {
@@ -107,9 +130,10 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
             </div>
             <div className="col-md-2">
               <LDropdown
-                handleChange={handleStatusChange}
+                handleChange={(e) => handleStatusChange(e.target.value)}
                 items={StatusItems}
                 label="status"
+                value={status ? 0 : 1}
               ></LDropdown>
             </div>
           </div>
@@ -126,7 +150,11 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
               <div className="border px-4 mt-3">
                 <div className="row mt-4">
                   {specs.length === 0 ? (
-                    <>Empty</>
+                    <>
+                      <div className="row d-flex justify-content-center py-1">
+                        Empty
+                      </div>
+                    </>
                   ) : (
                     specs.map((s) => {
                       return (
