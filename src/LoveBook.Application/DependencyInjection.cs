@@ -14,8 +14,6 @@ public static class DependencyInjection
         services.AddMediatR(typeof(DependencyInjection).Assembly);
 
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        //Needs FluentValidation.AspNetCore
-        //services.AddScoped<IValidator<RegisterCommand>, RegisterCommandValidator>();
         return services;
     }
 }

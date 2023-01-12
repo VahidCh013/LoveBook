@@ -4,16 +4,35 @@ import { useHistory, Link } from "react-router-dom";
 import InputPassword from "../../../shared/components/LInputPassword";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { ChangeEvent } from "react";
-import "../../../scss/login.scss";
 import { useState } from "react";
+import { CredentialService } from "../../../services/credentialServices";
+import Cookies from "js-cookie";
+import { Constants } from "../../../shared/constants/constant";
+
 interface ILoginProps {}
 const Login: React.FunctionComponent<ILoginProps> = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
-
-  const login = () => {
-    console.log(password);
+  const [loginFailure, setLoginFailure] = useState({
+    failed: false,
+    message: "",
+  });
+  const login = async () => {
+    await CredentialService.loginUser(email, password)
+      .then((response) => {
+        console.log(response);
+        Cookies.set(Constants.LbToken, response.data.token);
+        window.location.href = "/home";
+      })
+      .catch((error) => {
+        error.response?.data?.status === 401
+          ? setLoginFailure({
+              failed: true,
+              message: "Username or password is incorrect",
+            })
+          : setLoginFailure({ failed: true, message: "Something went wrong" });
+      });
   };
   const forgetPassword = () => {
     history.push("forgetPassword");
@@ -30,6 +49,14 @@ const Login: React.FunctionComponent<ILoginProps> = () => {
               <div className="row align-items-center h-100">
                 <div className="mx-auto">
                   <div className="title text-center display-5 ">Lovesbook</div>
+                  {loginFailure.failed && (
+                    <div className="col-md-12">
+                      <div className="alert alert-danger">
+                        <p className="mb-0">{loginFailure.message}</p>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="col-md-12">
                     <LInputLogin
                       id="email"

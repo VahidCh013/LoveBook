@@ -1,6 +1,11 @@
-﻿using Lovebook.Api.Common;
+﻿
+
+using FluentValidation;
+using FluentValidation.Results;
+using Lovebook.Api.Common;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Lovebook.Api.Controllers;
 
@@ -16,8 +21,13 @@ public class ErrorsController:ControllerBase
         var (statusCode, message) = exception switch
         {
             IServiceException  serviceException=> ((int)serviceException.StatusCode,serviceException.ErrorMessage),
+            ValidationException validationException=> (StatusCodes.Status400BadRequest,
+                JsonConvert.SerializeObject(validationException.Errors.Select(x => x.ErrorMessage))),
             _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred")
         };
         return Problem(statusCode:statusCode,title:message);
     }
+
+
 }
+

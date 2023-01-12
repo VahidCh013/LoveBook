@@ -9,7 +9,12 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
-
+// Add Cors
+builder.Services.AddCors( o => o.AddPolicy( "MyPolicy", builder => {
+    builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+} ) );
 // Add services to the container.
 builder.Services.AddMediator();
 
@@ -60,7 +65,10 @@ var app = builder.Build();
                 .CreateDbContext())
          dbContext.Database.Migrate();
  }
-
+app.UseCors( builder => builder
+    .AllowAnyOrigin()
+    .AllowAnyMethod()
+    .AllowAnyHeader() );
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

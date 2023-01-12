@@ -6,7 +6,7 @@ import ManageBook from "../ManageBooks/ManageBook";
 import AddCategory from "../ManageCategory/AddCategory";
 import EditCategory from "../ManageCategory/EditCategory";
 import ManageCategory from "../ManageCategory/ManageCategory";
-import NavBar from "../NavBar/Navbar";
+import NavBar from "../NavBar/navbar";
 
 interface IHomePageProps {}
 

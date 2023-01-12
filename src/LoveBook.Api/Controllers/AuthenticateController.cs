@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using CSharpFunctionalExtensions;
 using LoveBook.Api.Models;
 using LoveBook.Application.Authentications.Commands.Register;
 using MediatR;
@@ -65,8 +66,10 @@ public class AuthenticateController : ControllerBase
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
-        var result=await _mediator.Send(new RegisterCommand(model.Username, model.Password, model.Email));
-        return Ok(new Response { Status = "Success", Message = "User created successfully!" });
+        var result= await _mediator.Send(new RegisterCommand(model.Username, model.Password, model.Email))
+            .Match(s=>new Response { Status = "Success", Message = "User created successfully!" },
+                e=>new Response { Status = "Error", Message = e });
+        return Ok(result);
     }
 
     [HttpPost]

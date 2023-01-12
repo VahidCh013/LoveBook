@@ -1,4 +1,6 @@
-﻿using CSharpFunctionalExtensions;
+﻿
+
+using CSharpFunctionalExtensions;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -16,21 +18,21 @@ public class RegisterCommandHandler:IRequestHandler<RegisterCommand,Result<Authe
     public async Task<Result<Authentication>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         var userExists = await _userManager.FindByNameAsync(request.UserName);
-        //if (userExists != null)
-            //return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
+        if (userExists != null)
+            return Result.Failure<Authentication>("User does not exists");
 
         IdentityUser user = new ()
         {
-            Email = "",
+            Email =request.Email,
             SecurityStamp = Guid.NewGuid().ToString(),
-            UserName = ""
+            UserName = request.UserName
         };
-        //var result = await _userManager.CreateAsync(user, request.Password);
-        //if (!result.Succeeded)
-            //return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
+        var result = await _userManager.CreateAsync(user, request.Password);
+        if (!result.Succeeded)
+            return Result.Failure<Authentication>("User creation failed! Please check user details and try again.");
 
-        //return Ok(new Response { Status = "Success", Message = "User created successfully!" });
-        return null;
+        return Result.Success<Authentication>(new Authentication(null));
+
     }
 }
 

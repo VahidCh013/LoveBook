@@ -1,19 +1,12 @@
-import Login from "./app/login/components/login";
-import { Switch, Route } from "react-router-dom";
-import ForgetPassword from "./app/login/components/forgetPassword";
+import Cookies from "js-cookie";
 import HomePage from "./app/admin/components/Home/HomePage";
+import LCredential from "./app/login/components/LCredential";
+import { Constants } from "./shared/constants/constant";
 
 const App = () => {
-  const loggedIn = true;
-  return (
-    <>
-      {loggedIn ? <HomePage /> : <Login />}
-      <Switch>
-        <Route exact path="/forgetPassword" component={ForgetPassword}></Route>
-        <Route exact path="/login" component={Login}></Route>
-      </Switch>
-    </>
-  );
+  const loggedIn = Cookies.get(Constants.LbToken);
+
+  return <>{loggedIn ? <HomePage /> : <LCredential />}</>;
 };
 
 export default App;
