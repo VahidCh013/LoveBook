@@ -1,22 +1,52 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import LButton from "../../../../shared/components/LButton";
+import LDropdown from "../../../../shared/components/LDropdown";
 import LInput from "../../../../shared/components/LInput";
-import LInputLogin from "../../../../shared/components/LInput";
+import { CategoryItems } from "../../../../shared/models/categoryItems";
+import { StatusItems } from "../../../../shared/models/Status";
 import { Books } from "../../../../shared/repositories/bookReposirory";
-import { IBook } from "./models/book";
+import { IDropDownList } from "../../../../shared/utils/IDropDownList";
 interface IEditBookProps {}
 const EditBook: React.FunctionComponent<IEditBookProps> = () => {
   let search = window.location.search;
   let params = new URLSearchParams(search);
   let id = params.get("id");
-  const [book, setBook] = useState<IBook>();
   const [name, setName] = useState<string>();
+  const [status, setStatus] = useState<boolean>();
+  const [categoryId, setCategoryId] = useState<number>();
+  const histori = useHistory();
 
   useEffect(() => {
     const selectedBook = Books.find((b) => b.id.toString() === id);
-    setBook(selectedBook);
+    setName(selectedBook?.name);
+    setStatus(selectedBook?.status);
+    setCategoryId(selectedBook?.category.id);
   }, []);
-  const onChange = (value: string) => {
+
+  const handleNameChange = (value: string) => {
     setName(value);
+  };
+
+  const handleStatusChange = () => {
+    setStatus(!status);
+  };
+
+  const handleCategoryChange = (
+    e: React.ChangeEvent<{
+      name?: string | undefined;
+      value: number;
+    }>
+  ) => {
+    setCategoryId(e.target.value);
+  };
+  const handleSubmit = () => {
+    console.log("submit book");
+  };
+
+  const handleReturn = () => {
+    console.log("return");
+    histori.push("/managebook");
   };
   return (
     <>
@@ -24,16 +54,55 @@ const EditBook: React.FunctionComponent<IEditBookProps> = () => {
         <h3 className="mt-4 font-weight-bold" style={{ fontWeight: "bold" }}>
           Edit book
         </h3>
-        <div className="border mt-4">
-          <div className="row">
-            <div className="mt-5 mx-3 col-md-6">
+        <div className="border mt-4 py-5 ">
+          <div className="row px-4">
+            <div className="col-md-6">
               <LInput
-                handleChange={(e) => onChange(e.target.value)}
-                defaultValue={book?.name}
+                handleChange={(e) => handleNameChange(e.target.value)}
+                defaultValue={name}
                 caption="Name:"
               ></LInput>
             </div>
-            <div className="col-md-6"></div>
+            <div className="col-md-1 pt-2">
+              <h5>Status:</h5>
+            </div>
+            <div className="col-md-2">
+              <LDropdown
+                handleChange={handleStatusChange}
+                items={StatusItems}
+                label="Status"
+                value={status ? 1 : 0}
+              ></LDropdown>
+            </div>
+          </div>
+          <div className="row px-4">
+            <div className="col-md-1 mt-5 pt-2">
+              <h5>Category:</h5>
+            </div>
+            <div className="col-md-2 mx-2 mt-5">
+              <LDropdown
+                handleChange={(e) => handleCategoryChange(e)}
+                items={CategoryItems}
+                label="category"
+                value={categoryId ?? 0}
+              ></LDropdown>
+            </div>
+          </div>
+          <div className="row mt-5">
+            <div className="col-md-10 d-flex justify-content-end">
+              <LButton
+                label="Back"
+                color="inherit"
+                onClick={handleReturn}
+              ></LButton>
+            </div>
+            <div className="col-md-2 d-flex justify-content-start">
+              <LButton
+                label="Save"
+                color="inherit"
+                onClick={handleSubmit}
+              ></LButton>
+            </div>
           </div>
         </div>
       </div>

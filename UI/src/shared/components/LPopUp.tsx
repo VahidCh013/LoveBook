@@ -3,39 +3,24 @@ import Modal from "react-bootstrap/Modal";
 
 interface ILPopUpProps {
   show: boolean;
-  handleCancel: () => void;
-  handleConfirm: () => void;
+  headerNode?: React.ReactNode;
+  children: React.ReactNode;
+  footerNode: React.ReactNode;
 }
 const LPopUp: React.FunctionComponent<ILPopUpProps> = ({
   show,
-  handleCancel,
-  handleConfirm,
+  headerNode,
+  children,
+  footerNode,
 }) => {
-  const onCancel = () => {
-    handleCancel();
-  };
-  const onConfirm = () => {
-    handleConfirm();
-  };
   return (
     <>
       <Modal size="lg" show={show} contentClassName="modal-container">
-        <Modal.Header>
-          <h5>Delete</h5>
-        </Modal.Header>
+        {headerNode && <Modal.Header>{headerNode}</Modal.Header>}
 
-        <Modal.Body>
-          <span>Are you sure to delete?</span>
-        </Modal.Body>
+        <Modal.Body>{children}</Modal.Body>
 
-        <Modal.Footer>
-          <button className="btn" onClick={onCancel}>
-            Cancel
-          </button>
-          <button className="btn btn-danger" onClick={onConfirm}>
-            Yes
-          </button>
-        </Modal.Footer>
+        {footerNode && <Modal.Footer>{footerNode}</Modal.Footer>}
       </Modal>
     </>
   );

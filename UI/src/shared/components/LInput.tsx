@@ -18,7 +18,7 @@ const LInput: React.FunctionComponent<ILInputProps> = ({
       <div className="row mb-3">
         {caption !== undefined && (
           <div className="col-md-2 pt-2">
-            <h4>{caption}</h4>
+            <h5>{caption}</h5>
           </div>
         )}
         <div className="col-md-9">

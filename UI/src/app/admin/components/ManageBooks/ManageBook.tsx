@@ -8,9 +8,9 @@ import { Books } from "../../../../shared/repositories/bookReposirory";
 import { Routes } from "../../../../shared/routes/routes";
 import { IBook } from "./models/book";
 
-interface IManageBook {}
+interface IManageBookProps {}
 
-const ManageBook: React.FunctionComponent<IManageBook> = () => {
+const ManageBook: React.FunctionComponent<IManageBookProps> = () => {
   const [books, setBooks] = useState<IBook[]>([]);
   const [bookColumns, setBookColumns] = useState<IColumn[]>([]);
   const history = useHistory();
@@ -31,6 +31,19 @@ const ManageBook: React.FunctionComponent<IManageBook> = () => {
       search: `?id=${id}`
     })
   };
+  const onChangeStatus=(id:number)=>{
+    const bookUpdated = books.map((b=>
+      {
+        if ( b.id === id)
+        {
+          b.status = !b.status;
+          return b;
+        }
+        return b;
+      }));
+      setBooks(bookUpdated);
+      console.log(bookUpdated)
+  }
 
   return (
     <>
@@ -41,15 +54,14 @@ const ManageBook: React.FunctionComponent<IManageBook> = () => {
         <div className="addbook-btn d-flex justify-content-end p-4">
           <Link to={Routes.AddBook}>Add book +</Link>
         </div>
-        <div className="container">
           <LTable
             columns={bookColumns}
             data={books}
             includeTools={true}
             handleDelete={onDelete}
             handleEdit={onEdit}
+            handleChangeStatus={onChangeStatus}
           ></LTable>
-        </div>
       </div>
     </>
   );
