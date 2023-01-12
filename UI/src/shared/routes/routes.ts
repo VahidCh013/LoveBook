@@ -4,6 +4,8 @@ export enum Routes{
     ManageBook='/managebook',
     ManageCategory='/managecategory',
     AddBook='/addbook',
-    EditBook='/editbook'
+    EditBook='/editbook',
+    AddCategory='/addcategory',
+    EditCategory='/editcategory'
 
 }

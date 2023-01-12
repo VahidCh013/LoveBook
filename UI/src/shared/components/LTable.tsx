@@ -1,6 +1,6 @@
+import { IconButton } from "@material-ui/core";
 import React, { useState } from "react";
 import { IColumn } from "../models/IColumn";
-import LButton from "./LButton";
 import LPopUp from "./LPopUp";
 import LToogle from "./LToogle";
 
@@ -8,16 +8,17 @@ interface ILTableProps {
   columns: IColumn[];
   data: any[];
   includeTools: boolean;
-  handleDelete:(id: number) =>void;
-  handleEdit:(id: number)=>void;
-
+  handleDelete: (id: number) => void;
+  handleEdit: (id: number) => void;
+  handleChangeStatus: (id: number) => void;
 }
 const LTable: React.FunctionComponent<ILTableProps> = ({
   columns,
   data,
   includeTools,
   handleDelete,
-  handleEdit
+  handleEdit,
+  handleChangeStatus,
 }) => {
   if (includeTools) columns.push({ name: "" });
   const [id, setId] = useState(0);
@@ -39,8 +40,23 @@ const LTable: React.FunctionComponent<ILTableProps> = ({
     setShowPopUp(false);
   };
   const changeStatus = (id: number) => {
-    console.log(id);
+    handleChangeStatus(id);
   };
+  const header = <>Are you sure to delete?</>;
+  const body = (
+    <>The selected .... will be deleted. Are you sure want to continue ?</>
+  );
+  const footer = (
+    <>
+      <button className="btn" onClick={onCancel}>
+        Cancel
+      </button>
+      <button className="btn btn-danger" onClick={onConfirm}>
+        Yes
+      </button>
+    </>
+  );
+
   return (
     <>
       <table className="table">
@@ -73,14 +89,18 @@ const LTable: React.FunctionComponent<ILTableProps> = ({
                   <td>
                     <div className="row">
                       <div className="col-md-6 d-flex justify-content-end ">
-                        <LButton
-                          className="fa fa-pencil text-success"
+                        <IconButton
+                          aria-label="Example"
                           onClick={() => edit(b.id)}
-                        ></LButton>
-                        <LButton
-                          className="fa fa-trash text-danger"
+                        >
+                          <i className="fa fa-pencil text-success fa-2xs"></i>
+                        </IconButton>
+                        <IconButton
+                          aria-label="delete"
                           onClick={() => remove(b.id)}
-                        ></LButton>
+                        >
+                          <i className="fa fa-trash-o text-danger"></i>
+                        </IconButton>
                       </div>
                     </div>
                   </td>
@@ -90,11 +110,14 @@ const LTable: React.FunctionComponent<ILTableProps> = ({
           )}
         </tbody>
       </table>
-      <LPopUp
-        show={showPopUp}
-        handleCancel={onCancel}
-        handleConfirm={onConfirm}
-      />
+      {showPopUp && (
+        <LPopUp
+          show={showPopUp}
+          children={body}
+          headerNode={header}
+          footerNode={footer}
+        ></LPopUp>
+      )}
     </>
   );
 };
