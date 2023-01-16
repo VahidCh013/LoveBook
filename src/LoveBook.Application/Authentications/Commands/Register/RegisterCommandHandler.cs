@@ -1,6 +1,7 @@
 ﻿
 
 using CSharpFunctionalExtensions;
+using LoveBook.Domrin.Entities.ApplicationUsers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -8,9 +9,9 @@ namespace LoveBook.Application.Authentications.Commands.Register;
 
 public class RegisterCommandHandler:IRequestHandler<RegisterCommand,Result<Authentication>>
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public RegisterCommandHandler(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+    public RegisterCommandHandler(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
     }
@@ -21,7 +22,7 @@ public class RegisterCommandHandler:IRequestHandler<RegisterCommand,Result<Authe
         if (userExists != null)
             return Result.Failure<Authentication>("User does not exists");
 
-        IdentityUser user = new ()
+        ApplicationUser user = new ()
         {
             Email =request.Email,
             SecurityStamp = Guid.NewGuid().ToString(),

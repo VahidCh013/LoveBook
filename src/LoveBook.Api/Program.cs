@@ -1,5 +1,6 @@
 using System.Text;
 using LoveBook.Application;
+using LoveBook.Domrin.Entities.ApplicationUsers;
 using LoveBook.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -22,11 +23,14 @@ builder.Services.AddMediator();
 
 // For Entity Framework
 builder.Services.AddScoped<DbContextFactory<LoveBookDbContext>>();
+
+builder.Services.AddIdentityCore<ApplicationUser>();
+
 builder.Services.AddDbContextFactory<LoveBookDbContext>(options => 
     options.UseSqlServer(configuration.GetConnectionString("LoveBookConnection")));
 
 // For Identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<LoveBookDbContext>()
     .AddDefaultTokenProviders();
 

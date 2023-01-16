@@ -2,9 +2,13 @@
 using System.Security.Claims;
 using System.Text;
 using CSharpFunctionalExtensions;
+using Lovebook.Api.Dtos;
 using LoveBook.Api.Models;
 using LoveBook.Application.Authentications.Commands.Register;
+using LoveBook.Application.Authentications.Queries.GetUserByEmail;
+using LoveBook.Domrin.Entities.ApplicationUsers;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -15,13 +19,13 @@ namespace Lovebook.Api.Controllers;
 [ApiController]
 public class AuthenticateController : ControllerBase
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _configuration;
     private readonly IMediator _mediator;
 
     public AuthenticateController(
-        UserManager<IdentityUser> userManager,
+        UserManager<ApplicationUser> userManager,
         RoleManager<IdentityRole> roleManager,
         IConfiguration configuration, IMediator mediator)
     {
@@ -72,6 +76,18 @@ public class AuthenticateController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet]
+    [Route("getUserByEmail/{userEmail}")]
+    [Authorize]
+    public async Task<IActionResult> GetUserByEmail(string userEmail)
+    {
+        var result = await _mediator.Send(new GetUserByEmailQuery(userEmail))
+            .Match(s=>new UserDto(s.Id,s.UserName,s.Email,s.PhoneNumber,
+                s.FirstName,s.LastName),e=>new UserDto("","","","","",""));
+        return Ok(result);
+
+    }
+
     [HttpPost]
     [Route("register-admin")]
     public async Task<IActionResult> RegisterAdmin([FromBody] RegisterModel model)
@@ -80,7 +96,7 @@ public class AuthenticateController : ControllerBase
         if (userExists != null)
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
 
-        IdentityUser user = new()
+        ApplicationUser user = new()
         {
             Email = model.Email,
             SecurityStamp = Guid.NewGuid().ToString(),
