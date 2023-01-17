@@ -23,6 +23,7 @@ const Login: React.FunctionComponent<ILoginProps> = () => {
       .then((response) => {
         console.log(response);
         Cookies.set(Constants.LbToken, response.data.token);
+        Cookies.set(Constants.Email, email);
         window.location.href = "/home";
       })
       .catch((error) => {

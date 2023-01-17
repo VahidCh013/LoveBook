@@ -1,3 +1,4 @@
 export enum Constants{
-    LbToken="LB_Token"
+    LbToken="LB_Token",
+    Email="email"
 }

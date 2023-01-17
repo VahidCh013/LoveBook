@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import ForgetPassword from "./ForgetPassword";
-import Login from "./Login";
+import ForgetPassword from "./forgetPassword";
+import Login from "./login";
 
 interface ICredentialProps {}
 const Credential: React.FunctionComponent<ICredentialProps> = () => {
