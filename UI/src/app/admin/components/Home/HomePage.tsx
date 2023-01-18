@@ -10,6 +10,7 @@ import EditCategory from "../ManageCategory/EditCategory";
 import ManageCategory from "../ManageCategory/ManageCategory";
 import NavBar from "../NavBar/navbar";
 import Dashboard from "./Dashboard";
+import UserProfile from "./UserProfile";
 
 interface IHomePageProps {}
 
@@ -45,6 +46,7 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
                 path={Routes.EditCategory}
                 component={EditCategory}
               ></Route>
+              <Route path={Routes.UserProfile} component={UserProfile}></Route>
             </Switch>
           </div>
         </div>

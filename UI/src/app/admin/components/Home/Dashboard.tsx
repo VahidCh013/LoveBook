@@ -9,24 +9,35 @@ import { Avatar, Box, Menu } from "@mui/material";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import { Constants } from "../../../../shared/constants/constant";
-import Logo from "../../../../images/user.jpg"
+import Logo from "../../../../images/user.jpg";
+import { CredentialService } from "../../../../services/credentialServices";
+import { Routes } from "../../../../shared/routes/routes";
+import UserProfile from "./UserProfile";
+import { useHistory } from "react-router-dom";
 
 interface IDashboardProps {}
 const Dashboard: React.FunctionComponent<IDashboardProps> = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const history = useHistory();
+  const userEmail=Cookies.get(Constants.Email);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = async (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+  const onUserProfile = () => {
+    history.push({
+      pathname: Routes.UserProfile,
+      search: `?email=${userEmail}`
+    })
   };
   const handleClose = () => {
     setAnchorEl(null);
-
   };
-  const logOut = () =>{
+  const logOut = () => {
     Cookies.remove(Constants.LbToken);
     Cookies.remove(Constants.Email);
     window.location.href = "/login";
-  }
+  };
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -39,7 +50,7 @@ const Dashboard: React.FunctionComponent<IDashboardProps> = () => {
             aria-expanded={open ? "true" : undefined}
           >
             <Avatar sx={{ width: 32, height: 32 }}>
-              <img src={Logo} style={ {width: 32, height: 32 }}/>
+              <img src={Logo} style={{ width: 32, height: 32 }} />
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -79,7 +90,7 @@ const Dashboard: React.FunctionComponent<IDashboardProps> = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem>
+        <MenuItem onClick={onUserProfile}>
           <Avatar /> Profile
         </MenuItem>
         <Divider />

@@ -1,5 +1,7 @@
 import { BaseUri } from "./baseUri";
 import axios from "axios";
+import Cookies from "js-cookie";
+import { Constants } from "../shared/constants/constant";
 
 export class CredentialService {
   // public static async loginUser(userName: string, password: string) {
@@ -24,5 +26,15 @@ export class CredentialService {
       userName,
       password,
     });
+  }
+
+  public static async getUserProfile(email:string | undefined){
+    return await axios.get(`${BaseUri}/api/Authenticate/getUserByEmail/${email}`,
+    {
+      'headers': {
+        'Authorization': 'Bearer ' + Cookies.get(Constants.LbToken)
+      }
+    }
+    )
   }
 }
