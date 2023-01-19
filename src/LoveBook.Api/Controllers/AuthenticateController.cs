@@ -5,6 +5,7 @@ using CSharpFunctionalExtensions;
 using Lovebook.Api.Dtos;
 using LoveBook.Api.Models;
 using LoveBook.Application.Authentications.Commands.Register;
+using LoveBook.Application.Authentications.Commands.Update;
 using LoveBook.Application.Authentications.Queries.GetUserByEmail;
 using LoveBook.Domrin.Entities.ApplicationUsers;
 using MediatR;
@@ -70,9 +71,23 @@ public class AuthenticateController : ControllerBase
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] RegisterModel model)
     {
-        var result= await _mediator.Send(new RegisterCommand(model.Username, model.Password, model.Email))
+        var result= await _mediator.Send(new RegisterCommand(model.Username, model.Password, model.Email,model.FirstName,model.LastName))
             .Match(s=>new Response { Status = "Success", Message = "User created successfully!" },
                 e=>new Response { Status = "Error", Message = e });
+        return Ok(result);
+    }
+
+
+    [HttpPost]
+    [Route("updateUser")]
+    [Authorize]
+    public async Task<IActionResult> UpdateUser([FromBody] UpdateUserModel updateUserModel)
+    {
+        var result = await _mediator.Send(new UpdateUserCommand(updateUserModel.UserId, updateUserModel.FirstName,
+            updateUserModel.LastName,
+            updateUserModel.PhoneNumber))  
+            .Match(s=>new Response { Status = "Success", Message = "User updated successfully!" },
+            e=>new Response { Status = "Error", Message = e });
         return Ok(result);
     }
 
@@ -96,12 +111,7 @@ public class AuthenticateController : ControllerBase
         if (userExists != null)
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User already exists!" });
 
-        ApplicationUser user = new()
-        {
-            Email = model.Email,
-            SecurityStamp = Guid.NewGuid().ToString(),
-            UserName = model.Username
-        };
+        var user = ApplicationUser.CreateUser(model.FirstName,model.LastName,model.Email,model.Username);
         var result = await _userManager.CreateAsync(user, model.Password);
         if (!result.Succeeded)
             return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." });
