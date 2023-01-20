@@ -56,17 +56,17 @@ const EditBook: React.FunctionComponent<IEditBookProps> = () => {
         </h3>
         <div className="border mt-4 py-5 ">
           <div className="row px-4">
-            <div className="col-md-6">
+            <div className="col-md-5">
               <LInput
                 handleChange={(e) => handleNameChange(e.target.value)}
                 defaultValue={name}
                 caption="Name:"
               ></LInput>
             </div>
-            <div className="col-md-1 pt-2">
-              <h5>Status:</h5>
+            <div className="col-md-1 pt-2 px-5">
+              <h6>Status:</h6>
             </div>
-            <div className="col-md-2">
+            <div className="col-md-2 px-4">
               <LDropdown
                 handleChange={handleStatusChange}
                 items={StatusItems}
@@ -77,7 +77,7 @@ const EditBook: React.FunctionComponent<IEditBookProps> = () => {
           </div>
           <div className="row px-4">
             <div className="col-md-1 mt-5 pt-2">
-              <h5>Category:</h5>
+              <h6>Category:</h6>
             </div>
             <div className="col-md-2 mx-2 mt-5">
               <LDropdown
@@ -96,7 +96,7 @@ const EditBook: React.FunctionComponent<IEditBookProps> = () => {
                 onClick={handleReturn}
               ></LButton>
             </div>
-            <div className="col-md-2 d-flex justify-content-start">
+            <div className="col-md-2">
               <LButton
                 label="Save"
                 color="inherit"

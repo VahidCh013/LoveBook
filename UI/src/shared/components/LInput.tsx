@@ -17,11 +17,11 @@ const LInput: React.FunctionComponent<ILInputProps> = ({
     <>
       <div className="row mb-3">
         {caption !== undefined && (
-          <div className="col-md-2 pt-2">
-            <h5>{caption}</h5>
+          <div className="col-md-3 pt-2">
+            <h6>{caption}</h6>
           </div>
         )}
-        <div className="col-md-9">
+        <div className="col-md-8 px-1">
           <input
             type="text"
             className="form-control"
