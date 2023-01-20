@@ -5,18 +5,34 @@ import { CredentialService } from "../../../../services/credentialServices";
 import LButton from "../../../../shared/components/LButton";
 import LInput from "../../../../shared/components/LInput";
 import { Constants } from "../../../../shared/constants/constant";
-import { IUserProfile } from "../../../../shared/models/IUserProfile";
+import {
+  IUserProfile,
+  UserProfileDto,
+} from "../../../../shared/models/IUserProfile";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { USERPROFILEVALIDATION } from "../../Validations/validation";
 interface ICreateServiceTypeProps {}
 const UserProfile: React.FunctionComponent<ICreateServiceTypeProps> = () => {
   const [userProfile, setUserProfile] = useState<IUserProfile>();
+
   useEffect(() => {
     getUserProfile();
   }, []);
 
   const notify = () =>
     toast.success("User updated successfuly", {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  const notifyError = () =>
+    toast.error("Ooops! Something went wrong", {
       position: "bottom-left",
       autoClose: 5000,
       hideProgressBar: false,
@@ -44,19 +60,40 @@ const UserProfile: React.FunctionComponent<ICreateServiceTypeProps> = () => {
     let updatedUser = userProfile;
     if (updatedUser) {
       updatedUser.phoneNumber = value;
+      console.log(updatedUser);
       setUserProfile(updatedUser);
     }
   };
   const handleSubmit = () => {
-    let updatedUser = userProfile;
-    console.log(updatedUser);
-    notify();
+    console.log(userProfile);
+    USERPROFILEVALIDATION.validate(userProfile)
+      .then(() => {
+        if (userProfile) {
+          let updatedUser: UserProfileDto = {
+            userId: userProfile?.id,
+            firstName: userProfile?.firstName,
+            lastName: userProfile?.lastName,
+            phoneNumber: userProfile?.phoneNumber,
+          };
+          CredentialService.editUser(updatedUser)
+            .then((response) => {
+              notify();
+            })
+            .catch((e) => {
+              notifyError();
+            });
+        }
+      })
+      .catch((e) => {
+        console.log(e.errors);
+      });
   };
 
   const getUserProfile = async () => {
     const email = Cookies.get(Constants.Email);
     await CredentialService.getUserProfile(email)
       .then((response) => {
+        console.log(response.data);
         setUserProfile(response.data);
       })
       .catch((e) => console.log(e));

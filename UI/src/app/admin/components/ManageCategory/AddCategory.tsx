@@ -8,6 +8,7 @@ import { StatusItems } from "../../../../shared/models/Status";
 import { ISpec } from "../../../../shared/utils/iSpec";
 import * as yup from "yup";
 import { string } from "yargs";
+import { ToastContainer, toast, ToastContentProps } from "react-toastify";
 import { useHistory } from "react-router-dom";
 interface IAddCategoryProps {}
 const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
@@ -22,7 +23,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
     name: yup.string().required(),
   });
   const handleReturn = () => {
-    history.push('/managecategory');
+    history.push("/managecategory");
   };
   const handleSubmit = () => {
     let category = {
@@ -37,8 +38,29 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
         console.log(category);
       })
       .catch((e) => {
-        console.log(e.name);
-        console.log(e.errors);
+        e.errors.map(
+          (
+            e:
+              | boolean
+              | React.ReactChild
+              | React.ReactFragment
+              | React.ReactPortal
+              | ((props: ToastContentProps<unknown>) => React.ReactNode)
+              | null
+              | undefined
+          ) => {
+            toast.error(e, {
+              position: "bottom-left",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
+        );
       });
   };
 
@@ -212,6 +234,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
           show={showAddSpecPopUp}
         ></LPopUp>
       )}
+      <ToastContainer />
     </>
   );
 };
