@@ -7,7 +7,7 @@ using LoveBook.Api.Models;
 using LoveBook.Application.Authentications.Commands.Register;
 using LoveBook.Application.Authentications.Commands.Update;
 using LoveBook.Application.Authentications.Queries.GetUserByEmail;
-using LoveBook.Domrin.Entities.ApplicationUsers;
+using LoveBook.Domain.Entities.ApplicationUsers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

@@ -1,7 +1,7 @@
 ﻿
 
 using CSharpFunctionalExtensions;
-using LoveBook.Domrin.Entities.ApplicationUsers;
+using LoveBook.Domain.Entities.ApplicationUsers;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
