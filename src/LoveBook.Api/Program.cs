@@ -1,6 +1,7 @@
+using System.Reflection;
 using System.Text;
 using LoveBook.Application;
-using LoveBook.Domrin.Entities.ApplicationUsers;
+using LoveBook.Domain.Entities.ApplicationUsers;
 using LoveBook.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -33,6 +34,8 @@ builder.Services.AddDbContextFactory<LoveBookDbContext>(options =>
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<LoveBookDbContext>()
     .AddDefaultTokenProviders();
+// Auto Mapper
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 // Adding Authentication
 builder.Services.AddAuthentication(options =>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-namespace LoveBook.Domrin.Entities.ApplicationUsers;
+
+namespace LoveBook.Domain.Entities.ApplicationUsers;
 
 public sealed class ApplicationUser:IdentityUser
 {
