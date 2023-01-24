@@ -3,6 +3,7 @@ using CSharpFunctionalExtensions;
 using Lovebook.Api.Dtos.CategoriesDto;
 using Lovebook.Api.Dtos.CategoriesDto.GetAllCategories;
 using LoveBook.Application.Categories.Commands.CreateCategory;
+using LoveBook.Application.Categories.Commands.DeleteCategory;
 using LoveBook.Application.Categories.Models;
 using LoveBook.Application.Categories.Queries.GetAllCategories;
 using MediatR;
@@ -42,5 +43,14 @@ public class CategoryController:ControllerBase
     {
         var result =await _mediator.Send(new GetAllCategoriesQuery());
         return _mapper.Map<List<GetAllCategoriesDto>>(result);
+    }
+    
+    [Route("deleteCategory")]
+    [HttpPost]
+    [Authorize]
+    public async Task<DeleteCategoryPayload> DeleteCategory(long id)
+    {
+        return await _mediator.Send(new DeleteCategoryCommand(id))
+            .Match(s => new DeleteCategoryPayload(s.Id), e => new DeleteCategoryPayload(null, e.Split(',')));
     }
 }

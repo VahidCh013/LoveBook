@@ -11,7 +11,7 @@ public class Category:EntityBase,ITimeAudit,IDeletable
     public List<Spec> Specs { get; private set; }
     public DateTimeOffset CreatedOn { get; }
     public DateTimeOffset ModifiedOn { get; }
-    public bool IsDeleted { get;}
+    public bool IsDeleted { get; private set; }
 
 
     private Category()
@@ -40,4 +40,9 @@ public class Category:EntityBase,ITimeAudit,IDeletable
         return Result.Success();
     }
 
+    public Result Deleted()
+    {
+        IsDeleted = true;
+        return Result.Success();
+    }
 }
