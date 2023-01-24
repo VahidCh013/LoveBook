@@ -64,7 +64,7 @@ const UserProfile: React.FunctionComponent<ICreateServiceTypeProps> = () => {
       setUserProfile(updatedUser);
     }
   };
-  const handleSubmit = () => {
+  const handleSubmit =async () => {
     console.log(userProfile);
     USERPROFILEVALIDATION.validate(userProfile)
       .then(() => {

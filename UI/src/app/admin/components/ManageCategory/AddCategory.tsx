@@ -6,36 +6,68 @@ import LInput from "../../../../shared/components/LInput";
 import LPopUp from "../../../../shared/components/LPopUp";
 import { StatusItems } from "../../../../shared/models/Status";
 import { ISpec } from "../../../../shared/utils/iSpec";
-import * as yup from "yup";
-import { string } from "yargs";
 import { ToastContainer, toast, ToastContentProps } from "react-toastify";
 import { useHistory } from "react-router-dom";
+import { AddCategoryDto } from "../../../../shared/models/categoryDto";
+import { CategoryServises } from "../../../../services/categoryServices";
+import { ADDCATEGORYVALIDATION } from "../../Validations/validation";
 interface IAddCategoryProps {}
 const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
+  const [category, setCategory] = useState<AddCategoryDto>({
+    isActive: false,
+    name: "",
+    specs: [],
+  });
+  const [status, setStatus] = useState(false);
   const [specValue, setSpecValue] = useState("");
   const [specs, setSpecs] = useState<ISpec[]>([]);
   const [showAddSpecPopUp, setShowAddSpecPopUp] = useState(false);
-  const [name, setName] = useState("");
-  const [status, setStatus] = useState("0");
   const history = useHistory();
 
-  let schema = yup.object().shape({
-    name: yup.string().required(),
-  });
+  const notify = () =>
+    toast.success("User updated successfuly", {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  const notifyError = () =>
+    toast.error("Ooops! Something went wrong", {
+      position: "bottom-left",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
   const handleReturn = () => {
     history.push("/managecategory");
   };
-  const handleSubmit = () => {
-    let category = {
-      name: name,
-      specs: specs,
-      isActive: status,
-    };
-
-    schema
-      .validate(category)
+  const handleSubmit = async () => {
+    ADDCATEGORYVALIDATION.validate(category)
       .then(() => {
-        console.log(category);
+        if (category) {
+          let addedCategory: AddCategoryDto = {
+            name: category.name,
+            isActive: category.isActive,
+            specs: category.specs,
+          };
+          CategoryServises.createCategory(addedCategory)
+            .then((response) => {
+              notify();
+              console.log(addedCategory);
+            })
+            .catch((e) => {
+              notifyError();
+            });
+        }
       })
       .catch((e) => {
         e.errors.map(
@@ -65,11 +97,19 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
   };
 
   const handelNameChange = (value: string) => {
-    setName(value);
+    let addedCategory = category;
+    if (addedCategory) {
+      addedCategory.name = value;
+      setCategory(addedCategory);
+    }
   };
-  const handleStatusChange = (value: string) => {
-    console.log(value);
-    setStatus(value);
+  const handleStatusChange = (value: boolean) => {
+    let addedCategory = category;
+    if (addedCategory) {
+      addedCategory.isActive = value;
+      setCategory(addedCategory);
+      setStatus(value);
+    }
   };
   const handleSpecValueChange = (id: number, value: string) => {
     let updatedSpecs = specs.map((s) => {
@@ -84,7 +124,10 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
     setShowAddSpecPopUp(true);
   };
   const edit = () => {};
-  const remove = () => {};
+  const remove = (id: number) => {
+    let updatedSpecs = specs.filter((s) => s.id !== id);
+    setSpecs(updatedSpecs);
+  };
   const onCancel = () => {
     setShowAddSpecPopUp(false);
   };
@@ -96,6 +139,12 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
     let currentSpecs = specs;
     currentSpecs.push(spec);
     setSpecs(currentSpecs);
+    let addedCategory = category;
+    if (addedCategory) {
+      addedCategory.specs = currentSpecs.map((s) => s.value);
+      setCategory(addedCategory);
+    }
+
     setShowAddSpecPopUp(false);
   };
 
@@ -155,7 +204,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
                 handleChange={(e) => handleStatusChange(e.target.value)}
                 items={StatusItems}
                 label="status"
-                value={status ? 0 : 1}
+                value={status ? 1 : 0}
               ></LDropdown>
             </div>
           </div>
@@ -194,7 +243,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
                           <div className="col-md-4 d-flex justify-content-end">
                             <IconButton
                               aria-label="delete"
-                              onClick={() => remove()}
+                              onClick={() => remove(s.id)}
                             >
                               <i className="fa fa-trash-o text-danger"></i>
                             </IconButton>

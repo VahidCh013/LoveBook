@@ -1,4 +1,4 @@
-import { BaseUri } from "./baseUri";
+import { BaseUri, Bearer } from "./baseUri";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Constants } from "../shared/constants/constant";
@@ -34,7 +34,7 @@ export class CredentialService {
       `${BaseUri}/api/Authenticate/getUserByEmail/${email}`,
       {
         headers: {
-          Authorization: "Bearer " + Cookies.get(Constants.LbToken),
+          Authorization: Bearer,
         },
       }
     );
@@ -46,7 +46,7 @@ export class CredentialService {
       userProfileModel,
       {
         headers: {
-          Authorization: "Bearer " + Cookies.get(Constants.LbToken),
+          Authorization: Bearer,
         },
       }
     );
