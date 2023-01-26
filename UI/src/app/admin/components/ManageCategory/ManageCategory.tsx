@@ -25,9 +25,12 @@ const ManageCategory: React.FunctionComponent<IManageBookProps> = () => {
     });
   };
 
-  const onDelete = (id: number) => {
+  const onDelete = async (id: number) => {
     const updated = categories.filter((c) => c.id !== id);
-    setCategories(updated);
+    await CategoryServises.deleteCategory(id).then((response) => {
+      setCategories(updated);
+      console.log("test");
+    });
   };
   const onEdit = (id: number) => {
     history.push({

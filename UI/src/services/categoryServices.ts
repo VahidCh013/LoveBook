@@ -18,9 +18,17 @@ export class CategoryServises {
   }
 
   public static async getCategory() {
-    console.log("call");
     return await axios.get(`${BaseUri}/api/Category/GetAllCategories`, {
       headers: {
+        Authorization: Bearer,
+      },
+    });
+  }
+
+  public static async deleteCategory(id:number){
+    return await axios.post(`${BaseUri}/api/Category/deleteCategory?id=${id}`,
+    {
+      Headers: {
         Authorization: Bearer,
       },
     });
