@@ -12,5 +12,6 @@ public class SpecConfiguration:IEntityTypeConfiguration<Spec>
         builder.HasKey(x => x.Id);
         builder.MapTimeAuditColumns();
         builder.Property(x => x.Name).IsRequired().HasMaxLength(100);
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

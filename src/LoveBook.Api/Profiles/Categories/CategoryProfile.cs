@@ -11,20 +11,26 @@ public class CategoryProfile:Profile
     public CategoryProfile()
     {
         CreateMap<CategoryDto, CreateCategoryModel>();
-
         CreateMap<Category, GetAllCategoriesDto>();
-           // .ForMember(x=>x.Specs,opt=>opt.MapFrom(x=>x.Specs.ToHashSet().Select(s=>new SpecsDto(s.Id,s.Name))));
+
+        CreateMap<Category, GetCategoryByIdDto>()
+            .ForMember(x=>x.Specs,opt=>opt.MapFrom(s=>MapSpecs(s)));
     }
 
-    // private HashSet<SpecsDto> MapSpecs(List<Spec> specs)
-    // {
-    //     var specsDtos = new List<SpecsDto>();
-    //     foreach (var spec in specs)
-    //     {
-    //         var specDto = new SpecsDto(spec.Id, spec.Name);
-    //         specsDtos.Add(specDto);
-    //     }
-    //
-    //     return specsDtos.ToHashSet();
-    // }
+    private HashSet<SpecDto> MapSpecs(Category category)
+    {
+        var specsDto = new HashSet<SpecDto>();
+        foreach (var specDto in category.Specs.Select(spec => new SpecDto()
+                 {
+                     Id = spec.Id,
+                     Name = spec.Name
+                 }))
+        {
+            specsDto.Add(specDto);
+        }
+
+        return specsDto;
+    }
+
+
 }

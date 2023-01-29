@@ -6,9 +6,10 @@ namespace LoveBook.Domain.Entities.Categories;
 
 public class Spec : EntityBase,ITimeAudit
 {
-    public string Name { get;private set;}
+    public string Name { get;protected set;}
     public DateTimeOffset CreatedOn { get; }
     public DateTimeOffset ModifiedOn { get; }
+    public bool IsDeleted { get; protected set; }
 
     protected Spec(string name)
     {
@@ -16,5 +17,19 @@ public class Spec : EntityBase,ITimeAudit
 
     }
 
-    public static Result<Spec> AddSpec(string name) => new Spec(name);
+    public static Result<Spec> Create(string name) => new Spec(name);
+
+
+    public Result Delete()
+    {
+        IsDeleted = true;
+        return Result.Success();
+    }
+    public Result SetName(string name)
+    {
+        if (Name == name)
+            return Result.Success();
+        Name = name;
+        return Result.Success();
+    } 
 }
