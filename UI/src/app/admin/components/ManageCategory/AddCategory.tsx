@@ -27,7 +27,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
   const notify = () =>
     toast.success("User updated successfuly", {
       position: "bottom-left",
-      autoClose: 5000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -38,7 +38,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
   const notifyError = () =>
     toast.error("Ooops! Something went wrong", {
       position: "bottom-left",
-      autoClose: 5000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -62,10 +62,15 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
           CategoryServises.createCategory(addedCategory)
             .then((response) => {
               notify();
-              console.log(addedCategory);
+              setTimeout(() => {
+                history.push("/managecategory");
+              }, 3000);
             })
-            .catch((e) => {
+            .catch((error) => {
               notifyError();
+              console.log(error);
+              if (error.response.status === 404) history.push("404.jsx");
+              else if (error.response.status === 401) history.push("/login");
             });
         }
       })
@@ -106,7 +111,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
   const handleStatusChange = (value: boolean) => {
     let addedCategory = category;
     if (addedCategory) {
-      addedCategory.isActive = value;
+      addedCategory.isActive = value ? true : false;
       setCategory(addedCategory);
       setStatus(value);
     }

@@ -11,7 +11,7 @@ export class CategoryServises {
       categoryModel,
       {
         headers: {
-          Authorization:Bearer,
+          Authorization: Bearer,
         },
       }
     );
@@ -25,10 +25,9 @@ export class CategoryServises {
     });
   }
 
-  public static async deleteCategory(id:number){
-    return await axios.post(`${BaseUri}/api/Category/deleteCategory?id=${id}`,
-    {
-      Headers: {
+  public static async deleteCategory(id: number) {
+    return await axios.post(`${BaseUri}/api/Category/deleteCategory?id=${id}`, null,{
+      headers: {
         Authorization: Bearer,
       },
     });

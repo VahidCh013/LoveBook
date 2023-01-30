@@ -8,6 +8,7 @@ import { useState } from "react";
 import { CredentialService } from "../../../services/credentialServices";
 import Cookies from "js-cookie";
 import { Constants } from "../../../shared/constants/constant";
+import { addMinutes } from "../../../shared/utils/util";
 
 interface ILoginProps {}
 const Login: React.FunctionComponent<ILoginProps> = () => {
@@ -22,7 +23,12 @@ const Login: React.FunctionComponent<ILoginProps> = () => {
     await CredentialService.loginUser(email, password)
       .then((response) => {
         console.log(response);
-        Cookies.set(Constants.LbToken, response.data.token);
+        const date = new Date();
+        var expireDate = addMinutes(date, 180);
+
+        Cookies.set(Constants.LbToken, response.data.token, {
+          expires: expireDate,
+        });
         Cookies.set(Constants.Email, email);
         window.location.href = "/home";
       })
