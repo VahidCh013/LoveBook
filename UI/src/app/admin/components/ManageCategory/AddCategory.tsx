@@ -27,7 +27,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
   const notify = () =>
     toast.success("User updated successfuly", {
       position: "bottom-left",
-      autoClose: 2000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -38,7 +38,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
   const notifyError = () =>
     toast.error("Ooops! Something went wrong", {
       position: "bottom-left",
-      autoClose: 2000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -54,17 +54,17 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
     ADDCATEGORYVALIDATION.validate(category)
       .then(() => {
         if (category) {
-          let addedCategory: AddCategoryDto = {
-            name: category.name,
-            isActive: category.isActive,
-            specs: category.specs,
-          };
-          CategoryServises.createCategory(addedCategory)
+          // let addedCategory: AddCategoryDto = {
+          //   name: category.name,
+          //   isActive: category.isActive,
+          //   specs: category.specs,
+          // };
+          CategoryServises.createCategory(category)
             .then((response) => {
               notify();
               setTimeout(() => {
                 history.push("/managecategory");
-              }, 3000);
+              }, 2000);
             })
             .catch((error) => {
               notifyError();
@@ -238,7 +238,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
                           <div className="col-md-6">
                             <div className="col-md-8">
                               <LInput
-                                defaultValue={s.value}
+                                value={s.value}
                                 handleChange={(e) =>
                                   handleSpecValueChange(s.id, e.target.value)
                                 }

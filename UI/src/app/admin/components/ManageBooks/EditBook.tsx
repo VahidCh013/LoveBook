@@ -59,7 +59,7 @@ const EditBook: React.FunctionComponent<IEditBookProps> = () => {
             <div className="col-md-5">
               <LInput
                 handleChange={(e) => handleNameChange(e.target.value)}
-                defaultValue={name}
+                value={name}
                 caption="Name:"
               ></LInput>
             </div>

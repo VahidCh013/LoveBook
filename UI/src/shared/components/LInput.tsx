@@ -3,21 +3,21 @@ import React, { ChangeEvent } from "react";
 interface ILInputProps {
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   placeHolder?: string;
-  defaultValue?: string;
+  value?: string;
   caption?: string | undefined;
 }
 
 const LInput: React.FunctionComponent<ILInputProps> = ({
   handleChange,
   placeHolder,
-  defaultValue,
+  value,
   caption,
 }) => {
   return (
     <>
       <div className="row mb-3">
         {caption !== undefined && (
-          <div className="col-md-3 pt-2">
+          <div className="col-md-2 pt-2">
             <h6>{caption}</h6>
           </div>
         )}
@@ -27,7 +27,7 @@ const LInput: React.FunctionComponent<ILInputProps> = ({
             className="form-control"
             onChange={handleChange}
             placeholder={placeHolder}
-            defaultValue={defaultValue}
+            value={value}
           />
         </div>
       </div>

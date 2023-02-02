@@ -1,3 +1,5 @@
+import { response } from "express";
+import { async } from "q";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { CategoryServises } from "../../../../services/categoryServices";
@@ -33,9 +35,9 @@ const ManageCategory: React.FunctionComponent<IManageBookProps> = () => {
     });
   };
   const onEdit = (id: number) => {
-    history.push({
-      pathname: Routes.EditCategory,
-      search: `?id=${id}`,
+      history.push({
+        pathname: Routes.EditCategory,
+        search: `?id=${id}`,
     });
     console.log(id);
   };

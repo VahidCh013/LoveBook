@@ -1,4 +1,3 @@
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { CredentialService } from "../../../../services/credentialServices";
@@ -23,7 +22,7 @@ const UserProfile: React.FunctionComponent<ICreateServiceTypeProps> = () => {
   const notify = () =>
     toast.success("User updated successfuly", {
       position: "bottom-left",
-      autoClose: 5000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -34,7 +33,7 @@ const UserProfile: React.FunctionComponent<ICreateServiceTypeProps> = () => {
   const notifyError = () =>
     toast.error("Ooops! Something went wrong", {
       position: "bottom-left",
-      autoClose: 5000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -64,7 +63,7 @@ const UserProfile: React.FunctionComponent<ICreateServiceTypeProps> = () => {
       setUserProfile(updatedUser);
     }
   };
-  const handleSubmit =async () => {
+  const handleSubmit = async () => {
     console.log(userProfile);
     USERPROFILEVALIDATION.validate(userProfile)
       .then(() => {
@@ -124,14 +123,14 @@ const UserProfile: React.FunctionComponent<ICreateServiceTypeProps> = () => {
               <LInput
                 handleChange={(e) => handleFirstNameChange(e.target.value)}
                 caption="First Name:"
-                defaultValue={userProfile?.firstName}
+                value={userProfile?.firstName}
               ></LInput>
             </div>
             <div className="col-md-6">
               <LInput
                 handleChange={(e) => handleLastNameChange(e.target.value)}
                 caption="Last Name:"
-                defaultValue={userProfile?.lastName}
+                value={userProfile?.lastName}
               ></LInput>
             </div>
           </div>
@@ -140,7 +139,7 @@ const UserProfile: React.FunctionComponent<ICreateServiceTypeProps> = () => {
               <LInput
                 handleChange={(e) => handlePhonChange(e.target.value)}
                 caption="Phon Number:"
-                defaultValue={userProfile?.phoneNumber}
+                value={userProfile?.phoneNumber}
               ></LInput>
             </div>
             <div className="col-md-6"></div>
