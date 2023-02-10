@@ -7,6 +7,7 @@ export enum Routes{
     EditBook='/editbook',
     AddCategory='/addcategory',
     EditCategory='/editcategory',
-    UserProfile='/userfrofile'
+    UserProfile='/userfrofile',
+    ResetPassword= '/resetpassword'
 
 }

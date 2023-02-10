@@ -3,16 +3,13 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { Avatar, Box, Menu } from "@mui/material";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import { Constants } from "../../../../shared/constants/constant";
 import Logo from "../../../../images/user.jpg";
-import { CredentialService } from "../../../../services/credentialServices";
 import { Routes } from "../../../../shared/routes/routes";
-import UserProfile from "./UserProfile";
 import { useHistory } from "react-router-dom";
 
 interface IDashboardProps {}

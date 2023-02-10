@@ -25,7 +25,7 @@ const LDropdown: React.FunctionComponent<IlDropdownProps> = ({
           className="h6"
         >
           {items.map((item) => {
-            return <MenuItem value={item.key}>{item.value}</MenuItem>;
+            return <MenuItem value={item.id}>{item.value}</MenuItem>;
           })}
         </Select>
       </div>

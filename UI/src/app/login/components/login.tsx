@@ -1,4 +1,4 @@
-import logo from "../../../images/login.svg";
+import logo from "../../../images/userLogin.svg";
 import LInputLogin from "../../../shared/components/LInputLogin";
 import { useHistory, Link } from "react-router-dom";
 import InputPassword from "../../../shared/components/LInputPassword";

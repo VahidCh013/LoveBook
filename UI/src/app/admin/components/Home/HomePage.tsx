@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import { Route, Switch } from "react-router-dom";
 import { Constants } from "../../../../shared/constants/constant";
 import { Routes } from "../../../../shared/routes/routes";
+import ResetPassword from "../../../login/components/resetPassword";
 import AddBook from "../ManageBooks/AddBook";
 import EditBook from "../ManageBooks/EditBook";
 import ManageBook from "../ManageBooks/ManageBook";
@@ -28,7 +29,9 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
           <div className="col-md-8 d-flex justify-content-end pt-2">
             <span className="">{user}</span>
           </div>
-          <div className="col-md-1"><Dashboard></Dashboard></div>
+          <div className="col-md-1">
+            <Dashboard></Dashboard>
+          </div>
         </div>
         <div className="row">
           <NavBar />

@@ -7,4 +7,8 @@ export const USERPROFILEVALIDATION = yup.object().shape({
 
 export const ADDCATEGORYVALIDATION = yup.object().shape({
   name: yup.string().required("name is required")
-})
+});
+
+export const ADDBOOKVALIDATION = yup.object().shape({
+  name: yup.string().required("name is required")
+});

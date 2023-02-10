@@ -20,7 +20,19 @@ export type showCategoryById = {
   }[];
 };
 
-export interface ISpecDto {
+export type ISpecDto = {
   id: number;
   name: string;
+  value?: string;
+}
+
+export type ShowCategoryInBook = {
+  id: number;
+  value: string;
+
+}
+
+export type IAddSpec = {
+  id: number;
+  value: string;
 }

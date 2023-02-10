@@ -70,7 +70,7 @@ const AddCategory: React.FunctionComponent<ICreateServiceTypeProps> = () => {
     const specCount = specs?.length ?? 0;
     const spec = {
       id: specCount ?? specCount + 1,
-      name: specValue,
+      name: specValue
     };
     specs?.push(spec);
     setShowAddSpecPopUp(false);
