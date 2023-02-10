@@ -17,6 +17,7 @@ const ForgetPassword: React.FunctionComponent<IForgetPasswordProps> = () => {
   };
   const submit = () => {
     setShowMessage(true);
+    // history.push("/resetpassword");
   };
   return (
     <>

@@ -15,16 +15,17 @@ const LDropdown: React.FunctionComponent<IlDropdownProps> = ({
 }) => {
   return (
     <>
-      <div className="row">
+      <div className="row px-3">
         <Select
           labelId={label}
           id="dropdown"
           value={value}
           label={label}
           onChange={handleChange}
+          className="h6"
         >
           {items.map((item) => {
-            return <MenuItem value={item.key}>{item.value}</MenuItem>;
+            return <MenuItem value={item.id}>{item.value}</MenuItem>;
           })}
         </Select>
       </div>

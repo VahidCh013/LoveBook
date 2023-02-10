@@ -1,4 +1,4 @@
-export interface IDropDownList{
-    key:number,
-    value:string
+export interface IDropDownList {
+  id: number;
+  value: string;
 }

@@ -1,5 +1,8 @@
+import Cookies from "js-cookie";
 import { Route, Switch } from "react-router-dom";
+import { Constants } from "../../../../shared/constants/constant";
 import { Routes } from "../../../../shared/routes/routes";
+import ResetPassword from "../../../login/components/resetPassword";
 import AddBook from "../ManageBooks/AddBook";
 import EditBook from "../ManageBooks/EditBook";
 import ManageBook from "../ManageBooks/ManageBook";
@@ -7,10 +10,13 @@ import AddCategory from "../ManageCategory/AddCategory";
 import EditCategory from "../ManageCategory/EditCategory";
 import ManageCategory from "../ManageCategory/ManageCategory";
 import NavBar from "../NavBar/navbar";
+import Dashboard from "./Dashboard";
+import UserProfile from "./UserProfile";
 
 interface IHomePageProps {}
 
 const HomePage: React.FunctionComponent<IHomePageProps> = () => {
+  const user = Cookies.get(Constants.Email);
   return (
     <>
       <div className="container-fluid">
@@ -20,8 +26,11 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
               Lovesbook
             </div>
           </div>
-          <div className="col-md-8 d-flex justify-content-end">
-            <span className="">admin</span>
+          <div className="col-md-8 d-flex justify-content-end pt-2">
+            <span className="">{user}</span>
+          </div>
+          <div className="col-md-1">
+            <Dashboard></Dashboard>
           </div>
         </div>
         <div className="row">
@@ -40,6 +49,7 @@ const HomePage: React.FunctionComponent<IHomePageProps> = () => {
                 path={Routes.EditCategory}
                 component={EditCategory}
               ></Route>
+              <Route path={Routes.UserProfile} component={UserProfile}></Route>
             </Switch>
           </div>
         </div>

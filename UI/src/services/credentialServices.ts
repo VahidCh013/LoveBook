@@ -1,5 +1,8 @@
-import { BaseUri } from "./baseUri";
+import { BaseUri, Bearer } from "./baseUri";
 import axios from "axios";
+import Cookies from "js-cookie";
+import { Constants } from "../shared/constants/constant";
+import { UserProfileDto } from "../shared/models/IUserProfile";
 
 export class CredentialService {
   // public static async loginUser(userName: string, password: string) {
@@ -24,5 +27,28 @@ export class CredentialService {
       userName,
       password,
     });
+  }
+
+  public static async getUserProfile(email: string | undefined) {
+    return await axios.get(
+      `${BaseUri}/api/Authenticate/getUserByEmail/${email}`,
+      {
+        headers: {
+          Authorization: Bearer,
+        },
+      }
+    );
+  }
+
+  public static async editUser(userProfileModel: UserProfileDto) {
+    return await axios.post(
+      `${BaseUri}/api/Authenticate/updateUser`,
+      userProfileModel,
+      {
+        headers: {
+          Authorization: Bearer,
+        },
+      }
+    );
   }
 }

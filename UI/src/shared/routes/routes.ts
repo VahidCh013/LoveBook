@@ -6,6 +6,8 @@ export enum Routes{
     AddBook='/addbook',
     EditBook='/editbook',
     AddCategory='/addcategory',
-    EditCategory='/editcategory'
+    EditCategory='/editcategory',
+    UserProfile='/userfrofile',
+    ResetPassword= '/resetpassword'
 
 }

@@ -6,48 +6,115 @@ import LInput from "../../../../shared/components/LInput";
 import LPopUp from "../../../../shared/components/LPopUp";
 import { StatusItems } from "../../../../shared/models/Status";
 import { ISpec } from "../../../../shared/utils/iSpec";
-import * as yup from "yup";
-import { string } from "yargs";
+import { ToastContainer, toast, ToastContentProps } from "react-toastify";
 import { useHistory } from "react-router-dom";
+import { AddCategoryDto } from "../../../../shared/models/categoryDto";
+import { CategoryServises } from "../../../../services/categoryServices";
+import { ADDCATEGORYVALIDATION } from "../../Validations/validation";
 interface IAddCategoryProps {}
 const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
+  const [category, setCategory] = useState<AddCategoryDto>({
+    isActive: false,
+    name: "",
+    specs: [],
+  });
+  const [status, setStatus] = useState(false);
   const [specValue, setSpecValue] = useState("");
   const [specs, setSpecs] = useState<ISpec[]>([]);
   const [showAddSpecPopUp, setShowAddSpecPopUp] = useState(false);
-  const [name, setName] = useState("");
-  const [status, setStatus] = useState("0");
   const history = useHistory();
 
-  let schema = yup.object().shape({
-    name: yup.string().required(),
-  });
-  const handleReturn = () => {
-    history.push('/managecategory');
-  };
-  const handleSubmit = () => {
-    let category = {
-      name: name,
-      specs: specs,
-      isActive: status,
-    };
+  const notify = () =>
+    toast.success("User updated successfuly", {
+      position: "bottom-left",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  const notifyError = () =>
+    toast.error("Ooops! Something went wrong", {
+      position: "bottom-left",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
 
-    schema
-      .validate(category)
+  const handleReturn = () => {
+    history.push("/managecategory");
+  };
+  const handleSubmit = async () => {
+    ADDCATEGORYVALIDATION.validate(category)
       .then(() => {
-        console.log(category);
+        if (category) {
+          // let addedCategory: AddCategoryDto = {
+          //   name: category.name,
+          //   isActive: category.isActive,
+          //   specs: category.specs,
+          // };
+          CategoryServises.createCategory(category)
+            .then((response) => {
+              notify();
+              setTimeout(() => {
+                history.push("/managecategory");
+              }, 2000);
+            })
+            .catch((error) => {
+              notifyError();
+              console.log(error);
+              if (error.response.status === 404) history.push("404.jsx");
+              else if (error.response.status === 401) history.push("/login");
+            });
+        }
       })
       .catch((e) => {
-        console.log(e.name);
-        console.log(e.errors);
+        e.errors.map(
+          (
+            e:
+              | boolean
+              | React.ReactChild
+              | React.ReactFragment
+              | React.ReactPortal
+              | ((props: ToastContentProps<unknown>) => React.ReactNode)
+              | null
+              | undefined
+          ) => {
+            toast.error(e, {
+              position: "bottom-left",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
+        );
       });
   };
 
   const handelNameChange = (value: string) => {
-    setName(value);
+    let addedCategory = category;
+    if (addedCategory) {
+      addedCategory.name = value;
+      setCategory(addedCategory);
+    }
   };
-  const handleStatusChange = (value: string) => {
-    console.log(value);
-    setStatus(value);
+  const handleStatusChange = (value: boolean) => {
+    let addedCategory = category;
+    if (addedCategory) {
+      addedCategory.isActive = value ? true : false;
+      setCategory(addedCategory);
+      setStatus(value);
+    }
   };
   const handleSpecValueChange = (id: number, value: string) => {
     let updatedSpecs = specs.map((s) => {
@@ -62,7 +129,10 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
     setShowAddSpecPopUp(true);
   };
   const edit = () => {};
-  const remove = () => {};
+  const remove = (id: number) => {
+    let updatedSpecs = specs.filter((s) => s.id !== id);
+    setSpecs(updatedSpecs);
+  };
   const onCancel = () => {
     setShowAddSpecPopUp(false);
   };
@@ -74,6 +144,12 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
     let currentSpecs = specs;
     currentSpecs.push(spec);
     setSpecs(currentSpecs);
+    let addedCategory = category;
+    if (addedCategory) {
+      addedCategory.specs = currentSpecs.map((s) => s.value);
+      setCategory(addedCategory);
+    }
+
     setShowAddSpecPopUp(false);
   };
 
@@ -133,7 +209,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
                 handleChange={(e) => handleStatusChange(e.target.value)}
                 items={StatusItems}
                 label="status"
-                value={status ? 0 : 1}
+                value={status ? 1 : 0}
               ></LDropdown>
             </div>
           </div>
@@ -162,7 +238,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
                           <div className="col-md-6">
                             <div className="col-md-8">
                               <LInput
-                                defaultValue={s.value}
+                                value={s.value}
                                 handleChange={(e) =>
                                   handleSpecValueChange(s.id, e.target.value)
                                 }
@@ -172,7 +248,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
                           <div className="col-md-4 d-flex justify-content-end">
                             <IconButton
                               aria-label="delete"
-                              onClick={() => remove()}
+                              onClick={() => remove(s.id)}
                             >
                               <i className="fa fa-trash-o text-danger"></i>
                             </IconButton>
@@ -212,6 +288,7 @@ const AddCategory: React.FunctionComponent<IAddCategoryProps> = () => {
           show={showAddSpecPopUp}
         ></LPopUp>
       )}
+      <ToastContainer />
     </>
   );
 };
