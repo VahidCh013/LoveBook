@@ -1,0 +1,1 @@
+dotnet ef  migrations add [MigrationName] -c LoveBookDbContext -p .\LoveBook.Infrastructure\ -s .\LoveBook.Api\

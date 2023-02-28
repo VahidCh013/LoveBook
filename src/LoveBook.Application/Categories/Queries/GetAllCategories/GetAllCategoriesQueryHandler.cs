@@ -22,6 +22,6 @@ public class GetAllCategoriesQueryHandler:IRequestHandler<GetAllCategoriesQuery,
     {
         var db =await 
         _dbContext.CreateDbContextAsync(cancellationToken);
-        return  await db.Categories.WithoutDeleted().ToListAsync(cancellationToken: cancellationToken);
+        return  await db.Categories.WithoutDeleted().ToListAsync(cancellationToken);
     }
 }
