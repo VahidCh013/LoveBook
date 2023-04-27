@@ -1,5 +1,5 @@
 
-import { ICategory } from "../../app/admin/components/ManageBooks/models/category";
+import { ICategory } from "../models/category";
 
 export const Categories: ICategory[] = [
     {

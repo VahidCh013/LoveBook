@@ -12,7 +12,6 @@ const ForgetPassword: React.FunctionComponent<IForgetPasswordProps> = () => {
   const history = useHistory();
   const [showMessage, setShowMessage] = useState(false);
   const back = () => {
-    console.log("back");
     history.push("/login");
   };
   const submit = () => {
@@ -30,13 +29,11 @@ const ForgetPassword: React.FunctionComponent<IForgetPasswordProps> = () => {
             <div className="row align-items-center h-100">
               <div className="mx-auto mb-auto">
                 <div className="title text-center display-5">lovesbook</div>
-
                 <div className="text-center">
                   <h5>
                     <b>forget password?</b>
                   </h5>
                 </div>
-
                 <LInputLogin
                   id={email}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>

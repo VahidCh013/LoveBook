@@ -1,5 +1,4 @@
-import { response } from "express";
-import { async } from "q";
+
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { CategoryServises } from "../../../../services/categoryServices";

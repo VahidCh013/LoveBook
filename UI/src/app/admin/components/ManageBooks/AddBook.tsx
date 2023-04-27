@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { BookServices } from "../../../../services/bookServices";
 import { CategoryServises } from "../../../../services/categoryServices";
 import LButton from "../../../../shared/components/LButton";
 import LDropdown from "../../../../shared/components/LDropdown";
 import LInput from "../../../../shared/components/LInput";
+import { CreateBook } from "../../../../shared/models/bookDto";
 import {
   IAddSpec,
   ISpecDto,
   ShowCategory,
   ShowCategoryInBook,
 } from "../../../../shared/models/categoryDto";
-import { CategoryItems } from "../../../../shared/models/categoryItems";
 import { StatusItems } from "../../../../shared/models/Status";
 import { ADDBOOKVALIDATION } from "../../Validations/validation";
 
@@ -18,9 +19,15 @@ interface IAddBookProps {}
 const AddBook: React.FunctionComponent<IAddBookProps> = () => {
   const history = useHistory();
 
+  // const [book, setBook] = useState<AddBook>({
+  //   categoryId: 0,
+  //   isActive: false,
+  //   name: "",
+  //   specValues: [,""],
+  // });
   const [name, setName] = useState<string>();
   const [status, setStatus] = useState(false);
-  const [categoryId, setCategoryId] = useState<number>();
+  const [categoryId, setCategoryId] = useState<number>(0);
   const [categories, setCategories] = useState<ShowCategoryInBook[]>([]);
   const [specs, setSpecs] = useState<ISpecDto[]>([]);
   // const [addSpecs, setAddSpecs] = useState<IAddSpec[]>([]);
@@ -53,25 +60,44 @@ const AddBook: React.FunctionComponent<IAddBookProps> = () => {
   };
   const handleAddSpecsChange = (id: number, value: string) => {
     let addedSpecValue = specs.map((s) => {
-      if (s.id === id) {s.value = value;
+      if (s.id === id) {
+        s.value = value;
       }
-      return s
+      return s;
     });
     setSpecs(addedSpecValue);
-
   };
   const handleReturn = () => {
     history.push("/managebook");
   };
   const handleSubmit = async () => {
-    const book = {
-      name: name,
-      isActive: status,
+    var specvalues = specs.map((s) => {
+      return {
+        specId: s.id,
+        value: s.value??"",
+      };
+    });
+    const book:CreateBook = {
+
+      name: name??"",
+      isActive: status?true:false,
       categoryId: categoryId,
-      specs: specs,
+      specValues: specvalues,
     };
     ADDBOOKVALIDATION.validate(book)
-      .then(() => console.log(book))
+      .then(() => {
+        if (book) {
+          BookServices.createBook(book)
+          .then((response) => {
+            setTimeout(() => {
+              history.push("/managebook");
+            },2000);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        }
+      })
       .catch((error) => console.log(error));
   };
   return (
@@ -123,7 +149,7 @@ const AddBook: React.FunctionComponent<IAddBookProps> = () => {
                       <div className="col-md-8">
                         <LInput
                           handleChange={(e) =>
-                            handleAddSpecsChange(s.id , e.target.value)
+                            handleAddSpecsChange(s.id, e.target.value)
                           }
                           caption={s.name}
                         ></LInput>
