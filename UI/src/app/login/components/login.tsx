@@ -9,6 +9,11 @@ import { CredentialService } from "../../../services/credentialServices";
 import Cookies from "js-cookie";
 import { Constants } from "../../../shared/constants/constant";
 import { addMinutes } from "../../../shared/utils/util";
+import {
+  LoginModel,
+  AuthenticateService,
+  OpenAPI,
+} from "../../../libs/openapi-client";
 
 interface ILoginProps {}
 const Login: React.FunctionComponent<ILoginProps> = () => {
@@ -20,12 +25,17 @@ const Login: React.FunctionComponent<ILoginProps> = () => {
     message: "",
   });
   const login = async () => {
-    await CredentialService.loginUser(email, password)
+    let loginModel: LoginModel = {
+      username: email,
+      password: password,
+    };
+    await AuthenticateService.postApiAuthenticateLogin(loginModel)
       .then((response) => {
         console.log(response);
         const date = new Date();
         var expireDate = addMinutes(date, 180);
-
+        OpenAPI.TOKEN = response.data.token;
+        console.log(OpenAPI.TOKEN);
         Cookies.set(Constants.LbToken, response.data.token, {
           expires: expireDate,
         });
@@ -33,7 +43,8 @@ const Login: React.FunctionComponent<ILoginProps> = () => {
         window.location.href = "/home";
       })
       .catch((error) => {
-        error.response?.data?.status === 401
+        console.log(error.body);
+        error.body?.status === 401
           ? setLoginFailure({
               failed: true,
               message: "Username or password is incorrect",

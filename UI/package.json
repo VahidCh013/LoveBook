@@ -24,6 +24,8 @@
     "font-awesome": "^4.7.0",
     "js-cookie": "^3.0.1",
     "node-sass": "^7.0.3",
+    "openapi-typescript": "^6.2.4",
+    "openapi-typescript-codegen": "^0.24.0",
     "react": "^17.0.2",
     "react-alert": "^7.0.3",
     "react-bootstrap": "^2.7.0",
@@ -39,7 +41,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lb-api": "openapi -i http://localhost:5000/swagger/v1/swagger.json -o src/libs/openapi-client"
   },
   "eslintConfig": {
     "extends": [
